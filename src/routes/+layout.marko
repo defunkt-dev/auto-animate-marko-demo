@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@formkit/auto-animate — Marko adapter demo</title>
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: system-ui, sans-serif; max-width: 760px; margin: 0 auto; padding: 24px; color: #1f2937; }
+      h1 { font-size: 24px; margin-bottom: 4px; }
+      h2 { font-size: 18px; margin: 20px 0 8px; }
+      h3 { font-size: 14px; margin: 0 0 8px; color: #374151; }
+      p.lede { color: #555; margin-bottom: 16px; }
+      nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 28px; padding-bottom: 16px; border-bottom: 1px solid #e5e7eb; }
+      nav a { text-decoration: none; font-size: 14px; padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 999px; color: #1f2937; }
+      nav a:hover { background: #f3f4f6; }
+      .toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+      button { font-size: 14px; padding: 8px 14px; border: 1px solid #d1d5db; border-radius: 6px; background: #fff; cursor: pointer; }
+      button:hover { background: #f9fafb; }
+      ul.demo-list { list-style: none; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; }
+      ul.demo-list li { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; font-size: 14px; border-bottom: 1px solid #f3f4f6; background: #fff; }
+      ul.demo-list li:last-child { border-bottom: none; }
+      ul.demo-list li button { padding: 4px 10px; font-size: 12px; }
+      .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+      label.check { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; padding: 8px 14px; border: 1px solid #d1d5db; border-radius: 6px; }
+      .dropdown { border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; }
+      .panel { margin-top: 12px; padding: 14px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 14px; }
+      .hint { margin-top: 20px; font-size: 13px; color: #6b7280; }
+      code { font-family: ui-monospace, monospace; font-size: 0.9em; background: #f3f4f6; padding: 1px 5px; border-radius: 4px; }
+      pre.snippet { margin-top: 24px; background: #0f172a; color: #e2e8f0; padding: 14px 16px; border-radius: 8px; font-size: 12.5px; line-height: 1.55; overflow-x: auto; }
+      pre.snippet code { background: none; color: inherit; padding: 0; font-size: inherit; }
+    </style>
+  </head>
+  <body>
+    <h1>@formkit/auto-animate × Marko</h1>
+    <p class="lede">
+      The official Marko adapter, server-rendered by <code>@marko/run</code>.
+      Every page below arrives as real HTML from the server and resumes on the client.
+    </p>
+    <nav>
+      <a href="/">List basics</a>
+      <a href="/options">Options</a>
+      <a href="/plugin">Custom plugin</a>
+      <a href="/enabled">Enable / disable</a>
+      <a href="/dropdown">Raw core</a>
+    </nav>
+    <${input.content}/>
+  </body>
+</html>

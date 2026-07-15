@@ -1,0 +1,56 @@
+import AutoAnimate from "@formkit/auto-animate/marko"
+
+static const SNIPPET = `<let/enabled = true>
+
+<input type="checkbox" checked:=enabled/>
+
+<ul/listRef> ... </ul>
+<AutoAnimate parent=listRef enabled=enabled/>`;
+
+<let/enabled = true>
+<let/items = [
+  { id: 1, text: "Item one" },
+  { id: 2, text: "Item two" },
+  { id: 3, text: "Item three" },
+]>
+<let/nextId = 4>
+
+<h2>Enable / disable at runtime</h2>
+<p class="lede">
+  The <code>enabled</code> attribute is reactive: flip it and the adapter
+  calls the controller's <code>enable()</code> / <code>disable()</code> for
+  you. Uncheck the box, reorder the list, and watch items snap instead of
+  glide.
+</p>
+
+<div class="toolbar">
+  <label class="check">
+    <input type="checkbox" checked:=enabled/>
+    Animations ${enabled ? "on" : "off"}
+  </label>
+  <button onClick() {
+    items = [...items, { id: nextId, text: `Item ${nextId}` }];
+    nextId++;
+  }>Add</button>
+  <button onClick() {
+    items = items.slice(1);
+  }>Remove first</button>
+  <button onClick() {
+    items = [...items].reverse();
+  }>Reverse</button>
+</div>
+
+<ul/listRef class="demo-list">
+  <for|item| of=items by="id">
+    <li>${item.text}</li>
+  </for>
+</ul>
+<AutoAnimate parent=listRef enabled=enabled/>
+
+<pre class="snippet"><code>${SNIPPET}</code></pre>
+
+<p class="hint">
+  This is the piece a directive can't easily express: <code>enabled</code>
+  is just a reactive attribute, driven here by two-way binding
+  (<code>checked:=enabled</code>) on a plain checkbox.
+</p>

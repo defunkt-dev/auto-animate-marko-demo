@@ -1,0 +1,49 @@
+client import autoAnimate from "@formkit/auto-animate"
+
+static const SNIPPET = `client import autoAnimate from "@formkit/auto-animate"
+
+<let/open = false>
+
+<div/panelRef>
+  <button onClick() { open = !open }>Toggle</button>
+  <if=open>
+    <div class="panel">...</div>
+  </if>
+</div>
+
+<lifecycle onMount() {
+  autoAnimate(panelRef());
+}/>`;
+
+<let/open = false>
+
+<h2>Raw core: no tag, just the function</h2>
+<p class="lede">
+  The adapter is optional. The core <code>autoAnimate()</code> function works
+  directly in Marko — attach it to a ref inside a client-only lifecycle and
+  it animates that element's children, exactly like in vanilla JS.
+</p>
+
+<div/panelRef class="dropdown">
+  <button onClick() { open = !open }>
+    ${open ? "Close" : "Open"} dropdown
+  </button>
+  <if=open>
+    <div class="panel">
+      This panel's entrance and exit are animated by the core function —
+      no <code>&lt;AutoAnimate&gt;</code> tag on this page.
+    </div>
+  </if>
+</div>
+
+<lifecycle onMount() {
+  autoAnimate(panelRef());
+}/>
+
+<pre class="snippet"><code>${SNIPPET}</code></pre>
+
+<p class="hint">
+  The <code>client import</code> keeps the core off the server bundle, and
+  <code>onMount</code> runs on resume, when the server-rendered
+  <code>&lt;div&gt;</code> already exists in the DOM.
+</p>

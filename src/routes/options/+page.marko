@@ -1,0 +1,78 @@
+import AutoAnimate from "@formkit/auto-animate/marko"
+
+static const SNIPPET = `<AutoAnimate parent=fastRef options={ duration: 150, easing: "ease-in" }/>
+<AutoAnimate parent=slowRef options={ duration: 1500, easing: "ease-in-out" }/>`;
+
+static const START = [
+  { id: 1, text: "Row 1" },
+  { id: 2, text: "Row 2" },
+  { id: 3, text: "Row 3" },
+  { id: 4, text: "Row 4" },
+  { id: 5, text: "Row 5" },
+];
+
+<let/fastItems = [...START]>
+<let/slowItems = [...START]>
+<let/nextId = 6>
+
+<h2>Options: duration &amp; easing</h2>
+<p class="lede">
+  The <code>options</code> attribute takes the same object as the core:
+  <code>duration</code> (ms) and <code>easing</code>. Both lists receive the
+  same mutation at the same instant — the left snaps in 150ms, the right
+  glides for 1500ms.
+</p>
+
+<div class="toolbar">
+  <button onClick() {
+    const row = { id: nextId, text: `Row ${nextId}` };
+    fastItems = [row, ...fastItems];
+    slowItems = [row, ...slowItems];
+    nextId++;
+  }>Add to top of both</button>
+  <button onClick() {
+    fastItems = fastItems.slice(1);
+    slowItems = slowItems.slice(1);
+  }>Remove first from both</button>
+  <button onClick() {
+    fastItems = [...fastItems].reverse();
+    slowItems = [...slowItems].reverse();
+  }>Reverse both</button>
+</div>
+
+<div class="compare">
+  <div>
+    <h3>150ms, ease-in</h3>
+    <ul/fastRef class="demo-list">
+      <for|item| of=fastItems by="id">
+        <li>${item.text}</li>
+      </for>
+    </ul>
+  </div>
+  <div>
+    <h3>1500ms, ease-in-out</h3>
+    <ul/slowRef class="demo-list">
+      <for|item| of=slowItems by="id">
+        <li>${item.text}</li>
+      </for>
+    </ul>
+  </div>
+</div>
+<AutoAnimate parent=fastRef options={ duration: 150, easing: "ease-in" }/>
+<AutoAnimate parent=slowRef options={ duration: 1500, easing: "ease-in-out" }/>
+
+<pre class="snippet"><code>${SNIPPET}</code></pre>
+
+<p class="hint">
+  Why does removing feel slower than adding at the same duration? It's the
+  library's default effects, not the timer. A removed row fades out visibly
+  for the full duration while the rows below slide up — lots to watch. An
+  entering row never moves: it's held invisible for the first half of its
+  animation, then simply fades in, so it reads as an instant "pop" even
+  though it runs just as long. The visible slide on add comes from the
+  existing rows making room, which is why this demo inserts at the top. (See
+  the plugin page for a custom add effect that is clearly visible.)
+  auto-animate also respects the OS "reduce motion" setting by default; the
+  core exposes <code>disrespectUserMotionPreference</code> to override that,
+  but using it is not recommended.
+</p>

@@ -1,0 +1,87 @@
+import AutoAnimate from "@formkit/auto-animate/marko"
+
+static const SNIPPET = `<AutoAnimate parent=listRef options=(el, action, oldCoords, newCoords) => {
+  let keyframes;
+  if (action === "add") {
+    keyframes = [
+      { transform: "scale(0)", opacity: 0 },
+      { transform: "scale(1.15)", opacity: 1, offset: 0.75 },
+      { transform: "scale(1)", opacity: 1 },
+    ];
+  }
+  if (action === "remove") { /* shrink-out keyframes */ }
+  if (action === "remain") { /* springy slide from old to new coords */ }
+  return new KeyframeEffect(el, keyframes, { duration: 600, easing: "ease-out" });
+}/>`;
+
+<let/items = [
+  { id: 1, text: "Bouncy one" },
+  { id: 2, text: "Bouncy two" },
+  { id: 3, text: "Bouncy three" },
+]>
+<let/nextId = 4>
+
+<h2>Custom plugin: your own keyframes</h2>
+<p class="lede">
+  Instead of an options object, <code>options</code> can be a plugin
+  function that returns a <code>KeyframeEffect</code> per action
+  (<code>add</code>, <code>remove</code>, <code>remain</code>). This page
+  uses an overshoot "bounce" on add, a shrink-out on remove, and a springy
+  slide for items that move.
+</p>
+
+<div class="toolbar">
+  <button onClick() {
+    items = [...items, { id: nextId, text: `Bouncy ${nextId}` }];
+    nextId++;
+  }>Add</button>
+  <button onClick() {
+    items = items.slice(1);
+  }>Remove first</button>
+  <button onClick() {
+    items = [...items].reverse();
+  }>Reverse</button>
+</div>
+
+<ul/listRef class="demo-list">
+  <for|item| of=items by="id">
+    <li>${item.text}</li>
+  </for>
+</ul>
+<AutoAnimate parent=listRef options=(el, action, oldCoords, newCoords) => {
+  let keyframes;
+  if (action === "add") {
+    keyframes = [
+      { transform: "scale(0)", opacity: 0 },
+      { transform: "scale(1.15)", opacity: 1, offset: 0.75 },
+      { transform: "scale(1)", opacity: 1 },
+    ];
+  }
+  if (action === "remove") {
+    keyframes = [
+      { transform: "scale(1)", opacity: 1 },
+      { transform: "scale(1.15)", opacity: 1, offset: 0.33 },
+      { transform: "scale(0.75)", opacity: 0.1, offset: 0.5 },
+      { transform: "scale(0.5)", opacity: 0 },
+    ];
+  }
+  if (action === "remain") {
+    const deltaX = oldCoords.left - newCoords.left;
+    const deltaY = oldCoords.top - newCoords.top;
+    keyframes = [
+      { transform: `translate(${deltaX}px, ${deltaY}px)` },
+      { transform: `translate(${deltaX * -0.15}px, ${deltaY * -0.15}px)`, offset: 0.75 },
+      { transform: "translate(0, 0)" },
+    ];
+  }
+  return new KeyframeEffect(el, keyframes, { duration: 600, easing: "ease-out" });
+}/>
+
+<pre class="snippet"><code>${SNIPPET}</code></pre>
+
+<p class="hint">
+  Plugin argument order matches the core's call sites: for
+  <code>remain</code> the third argument is the old coordinates and the
+  fourth is the new; <code>add</code> receives the new coordinates third;
+  <code>remove</code> receives the old coordinates third.
+</p>
